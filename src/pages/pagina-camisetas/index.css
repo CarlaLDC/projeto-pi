@@ -1,0 +1,110 @@
+.cabecalho {
+    display: flex;
+    flex-direction: row;
+
+    justify-content: center;
+    align-items: center;
+
+    padding: 20px 0px;
+    margin: -10px;
+
+    background-color: #f6f6f6;
+
+
+}
+
+.logo {
+    width: 100px;
+    padding-top: 10px;
+    
+}
+
+img {
+    width: 30px;
+
+}
+
+.links {
+    display: inline-flex;
+    flex-direction: row;
+
+    width: 150px;
+    
+    gap: 30px;
+    margin-left: 200px ;
+    
+    
+}
+
+a {
+    text-decoration: none;
+    color: black;
+    font-family: 'Poppins', sans-serif;
+    font-weight: 600;
+    font-size: 18px;
+
+    padding: 0px 32px;
+    padding-bottom: 10px;
+
+}
+
+
+
+a:hover {
+    color: #727272;
+    border-bottom: 2px solid #727272;
+}
+
+.trio {
+    display: inline-flex;
+    flex-direction: row;
+
+    width: 500px;
+    justify-content: right;
+
+
+    gap: 40px;
+    margin-left: 450px ;
+
+}
+
+.login {
+    margin-left: 450px;
+    
+    border: 2px solid rgb(255, 255, 255);
+    border-radius: 20px;
+    padding: 5px 15px;
+    background-color: white;
+    box-shadow: 0 4px 8px #7c7c7c;
+    transition: transform 0.3s, box-shadow 0.3s;
+
+    position: relative;
+    bottom: 10px;
+    
+    
+}
+
+.fotos-principal {
+    display: flex;
+    flex-direction: row;
+
+    justify-content: center;
+    align-items: center;
+
+    padding: 20px 0px;
+    margin: 20px 0px;
+}
+
+.ftp {
+    width: 30%;
+    height: auto;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px #7c7c7c;
+    transition: transform 0.3s, box-shadow 0.3s;
+    margin: 0px 10px;
+}
+
+.ftp:hover {
+    transform: scale(1.05);
+    box-shadow: 0 8px 16px #5c5c5c;
+}
