@@ -20,7 +20,7 @@
 }
 
 img {
-    width: 30px;
+    width: 20px;
 
 }
 
@@ -45,7 +45,6 @@ a {
 
     padding: 0px 32px;
     padding-bottom: 10px;
-
 }
 
 
@@ -60,11 +59,23 @@ a:hover {
     flex-direction: row;
 
     width: 500px;
+    height: auto;
     justify-content: right;
 
-
     gap: 40px;
-    margin-left: 450px ;
+    margin-right: 50px ;
+
+}
+
+.btn {
+    border: 0px;
+    background-color: rgba(255, 255, 255);
+
+    color: black;
+    font-weight: 600;
+
+    font-family: 'Poppins', sans-serif;
+
 
 }
 
@@ -73,15 +84,14 @@ a:hover {
     
     border: 2px solid rgb(255, 255, 255);
     border-radius: 20px;
-    padding: 5px 15px;
+    padding: 5px 25px;
     background-color: white;
     box-shadow: 0 4px 8px #7c7c7c;
     transition: transform 0.3s, box-shadow 0.3s;
 
-    position: relative;
-    bottom: 10px;
+ 
     
-    
+    margin-left: 1100px;
 }
 
 .fotos-principal {
