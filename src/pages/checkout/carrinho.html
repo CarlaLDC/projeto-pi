@@ -1,0 +1,582 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Carrinho - Simons</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+</head>
+<style>
+
+@import url('https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600;700&display=swap');
+
+:root {
+    --primary-color: #000;
+    --secondary-color: #fff;
+    --light-gray: #f2f2f2;
+    --border-color: #ccc;
+    --stepper-active-bg: #000;
+    --stepper-active-text: #fff;
+    --stepper-inactive-text: #999;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Open Sans', sans-serif;
+}
+
+body {
+    background-color: var(--secondary-color);
+    color: var(--primary-color);
+}
+
+
+.header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 15px 50px;
+    border-bottom: 1px;
+    height: 70px;
+    background: #f2f2f2;
+    box-shadow: 0 5px 10px rgba(0, 0, 0, 0.377);
+}
+
+.img-logo {
+    width: 100px;
+    margin-left: 50px;
+}
+
+.nav a {
+    text-decoration: none;
+    color: black;
+    text-transform: uppercase;
+    margin: 0 15px;
+    font-size: 0.9em;
+    padding-bottom: 5px;
+}
+
+.user {
+    display: flex;
+    align-items: center;
+}
+
+.login-btn {
+    background: white;
+    color: black;
+    border: none;
+    padding: 8px 50px;
+    text-transform: lowercase;
+    font-size: 0.9em;
+    cursor: pointer;
+    margin-right: 50px;
+    border-radius: 50px; 
+
+}
+
+.carrinho-icone {
+    font-size: 1.2em;
+    margin-right: 20px;
+    color: black;
+    text-decoration: none;
+}
+
+.lupa-icone {
+    font-size: 1.2em;
+    margin-right: 20px;
+    color: black;
+    text-decoration: none;
+}
+
+.menu-icone {
+    font-size: 1.2em;
+    margin-right: 15px;
+    color: black;
+    text-decoration: none;
+}
+
+.menu-icone {
+    font-size: 1.2em;
+    margin-right: 15px;
+    color: black;
+    text-decoration: none;
+}
+
+.container {
+    max-width: 1200px;
+    margin: 30px auto;
+    padding: 0 50px;
+}
+
+.header-carrinho {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end; 
+    border-bottom: 1px solid var(--border-color);
+    padding-bottom: 20px;
+    margin-bottom: 30px;
+}
+
+.titulo-carrinho {
+    font-size: 1.8em;
+    font-weight: 400;
+}
+
+.item-count {
+    font-size: 0.5em;
+    font-weight: 400;
+    color: var(--stepper-inactive-text);
+}
+
+.etapa {
+    display: flex;
+    align-items: center;
+    font-size: 0.8em;
+    text-transform: uppercase;
+}
+
+.step {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    position: relative;
+    padding: 0 30px;
+}
+
+.step:not(:last-child)::after {
+    content: '';
+    position: absolute;
+    top: 10px;
+    right: 0;
+    width: 30px; 
+    height: 1px;
+    background-color: var(--border-color);
+    transform: translateX(15px); 
+}
+
+.step-number {
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    background-color: var(--light-gray);
+    color: var(--stepper-inactive-text);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 5px;
+    border: 1px solid var(--border-color);
+}
+
+.step.active .step-number {
+    background-color: var(--stepper-active-bg);
+    color: var(--stepper-active-text);
+    border-color: var(--stepper-active-bg);
+}
+
+.step-name {
+    color: var(--stepper-inactive-text);
+}
+
+.step.active .step-name {
+    color: var(--primary-color);
+    font-weight: 600;
+}
+
+
+.carrinho-main-content {
+    display: flex;
+    gap: 30px;
+}
+
+.carrinho-itens {
+    flex: 2; 
+    border-right: 1px solid var(--border-color); 
+    padding-right: 30px;
+    background: red;
+    background-color: var(--light-gray);
+
+}
+
+.resumo-pedido {
+    flex: 1; 
+}
+
+.carrinho-item {
+    display: flex;
+    align-items: flex-start;
+    padding: 20px 0;
+    border-bottom: 1px solid var(--border-color);
+}
+
+.item-img {
+    width: 100px;
+    object-fit: cover;
+    margin-right: 20px;
+    background: white;
+    margin-left: 30px;
+    
+}
+
+.item-details {
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+}
+
+.item-nome {
+    font-size: 1.1em;
+    font-weight: 600;
+    margin-bottom: 5px;
+}
+
+.item-tamanho {
+    font-size: 0.8em;
+    color: var(--stepper-inactive-text);
+    margin-bottom: 15px;
+    text-transform: uppercase;
+}
+
+.item-preco {
+    font-size: 1.1em;
+    font-weight: 600;
+}
+
+.item-acao {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    
+}
+
+.item-qty {
+    font-size: 0.9em;
+    color: var(--stepper-inactive-text);
+    margin-bottom: 15px;
+}
+
+.action-icons i {
+    font-size: 1.1em;
+    margin-left: 10px;
+    cursor: pointer;
+    color: var(--stepper-inactive-text);
+    color: black; 
+}
+
+.resumo-pedido {
+    padding-left: 10px;
+}
+
+.frete-calc {
+    padding: 20px;
+    background-color: var(--light-gray);
+    margin-bottom: 30px;
+    border-radius: 2px;
+}
+
+.frete-title {
+    font-weight: 600;
+    margin-bottom: 15px;
+    font-size: 0.9em;
+}
+
+.cep-input-group {
+    display: flex;
+}
+
+.cep-input-group input {
+    flex-grow: 1;
+    padding: 8px;
+    border: 1px solid var(--border-color);
+    border-right: none;
+    font-size: 0.9em;
+}
+
+.btn-calcular {
+    padding: 8px 15px;
+    background-color: var(--primary-color);
+    color: var(--secondary-color);
+    border: none;
+    cursor: pointer;
+    font-weight: 600;
+    font-size: 0.9em;
+}
+
+.resumo-detalhes {
+    padding: 10px 0;
+    background-color: var(--light-gray);
+    padding: 20px;
+}
+
+.resumo-titulo {
+    font-weight: 600;
+    margin-bottom: 25px;
+    font-size: 0.9em;
+}
+
+.resumo-total {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 1px solid var(--border-color);
+    padding-bottom: 15px;
+    margin-bottom: 20px;
+    font-size: 1.2em;
+    font-weight: 600;
+}
+
+.btn-comprar, .btn-adicionar-mais {
+    width: 100%;
+    padding: 12px;
+    border: 1px solid var(--primary-color);
+    font-weight: 600;
+    cursor: pointer;
+    margin-bottom: 10px;
+    text-transform: uppercase;
+    border-radius: 2px;
+    font-size: 0.9em;
+}
+
+.btn-comprar {
+    background-color: var(--primary-color);
+    color: var(--secondary-color);
+}
+
+.btn-adicionar-mais {
+    background-color: var(--secondary-color);
+    color: var(--primary-color);
+    border: 1px solid var(--border-color);
+}
+
+.linha {
+    height: 1.5px;
+    margin-top: 50px;
+    background: rgba(0, 0, 0, 0.247);
+}
+
+.sugestoes-title {
+    text-align: center;
+    font-size: 1.2em;
+    font-weight: 600;
+    padding-top: 50px;
+}
+
+.sugestoes-produtos {
+    display: flex;
+    justify-content: space-between;
+    gap: 20px;
+    margin-top: 30px;
+}
+
+.produto-sugestao {
+    flex: 1;
+    text-align: center;
+    padding: 15px;
+}
+
+.produto-img-container {
+    background-color: var(--light-gray);
+    padding: 20px;
+    margin-bottom: 15px;
+    border-radius: 20px;
+    height: 72%;
+    width: 100%; 
+
+}
+
+.produto-img {
+    width: 100%;
+    height: auto;
+    display: block;
+    margin-bottom: 50px;
+}
+
+.container-sugestao {
+    font-weight: 600;
+    font-size: 1.1em;
+    text-align: left;
+}
+
+.produto-preco {
+    margin-bottom: 30px;
+    
+}
+
+.produto-footer {
+    width: calc(100% - 20px); 
+    height: 1px;
+    background: rgba(0, 0, 0, 0.247);
+    margin-bottom: 25px;
+    margin-right: 10px; 
+    height: 1.5px;
+}
+
+.btn-comprar-sugestao {
+    padding: 8px 30px;
+    background-color: var(--light-gray);
+    color: var(--primary-color);
+    border: 1px;
+    cursor: pointer;
+    border-radius: 50px;
+    box-shadow: 0 5px 10px rgba(0, 0, 0, 0.377);
+    background: #f2f2f2;
+    text-decoration: none;
+    width: 20px;
+}
+
+</style>
+<body>
+
+    <header class="header">
+        <div>
+            <img class="img-logo" src="img/simons-logo.png" alt="Logo Simons">
+        </div>
+        <nav class="nav">
+            <a href="#">casual</a>
+            <a href="#">social</a>
+        </nav>
+        <div class="user">
+            <button class="login-btn">login</button>
+            <a href="#" class="carrinho-icone"><i class="fas fa-shopping-cart"></i></a>
+            <a href="#" class="lupa-icone"><i class="fas fa-search"></i></a>
+            <a href="#" class="menu-icone"><i class="fas fa-ellipsis-v"></i></a>
+        </div>
+    </header>
+
+    <main class="container">
+        
+        <div class="header-carrinho">
+            <h1 class="titulo-carrinho">Carrinho <span class="item-count">( 2 Itens )</span></h1>
+            <div class="etapa">
+                <div class="step active">
+                    <span class="step-number">1</span>
+                    <span class="step-name">carrinho</span>
+                </div>
+                <div class="step">
+                    <span class="step-number">2</span>
+                    <span class="step-name">entrega</span>
+                </div>
+                <div class="step">
+                    <span class="step-number">3</span>
+                    <span class="step-name">pagamento</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="carrinho-main-content">
+            <div class="carrinho-itens">
+
+                <div class="carrinho-item">
+                    <img src="img/simons.png" alt="Camiseta Simons" class="item-img">
+                    <div class="item-details">
+                        <p class="item-nome">Camiseta Simons</p>
+                        <p class="item-tamanho">L</p>
+                        <p class="item-preco">R$ 59,90</p>
+                        <div clas></div>
+                    </div>
+                    <div class="item-acao">
+                        <p class="item-qty">1 und</p>
+                        <div class="action-icons">
+                            <i class="fas fa-pencil-alt"></i>
+                            <i class="fas fa-trash-alt"></i>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="carrinho-item">
+                    <img src="img/simons.png" alt="Camiseta Simons" class="item-img">
+                    <div class="item-details">
+                        <p class="item-nome">Camiseta Simons</p>
+                        <p class="item-tamanho">M</p>
+                        <p class="item-preco">R$ 59,90</p>
+                    </div>
+                    <div class="item-acao">
+                        <p class="item-qty">1 und</p>
+                        <div class="action-icons">
+                            <i class="fas fa-pencil-alt"></i>
+                            <i class="fas fa-trash-alt"></i>
+                        </div>
+                    </div>
+                </div>
+                
+            </div>
+
+            <aside class="resumo-pedido">
+                <div class="frete-calc">
+                    <p class="frete-title">Calcular frete e prazo</p>
+                    <div class="cep-input-group">
+                        <input type="text" placeholder="Digite seu CEP aqui">
+                        <button class="btn-calcular">Calcular</button>
+                    </div>
+                </div>
+
+                <div class="resumo-detalhes">
+                    <p class="resumo-titulo">Resumo do pedido</p>
+                    <div class="resumo-total">
+                        <span class="total-label">Total:</span>
+                        <span class="total-price">R$ 119,80</span>
+                    </div>
+                    <button class="btn-comprar">Comprar</button>
+                    <button class="btn-adicionar-mais">Adicionar mais produtos</button>
+                </div>
+            </aside>
+        </div>
+        
+        <hr class="linha">
+        <p class="sugestoes-title">Você também pode gostar</p>
+        <hr class="linha">
+
+        <section class="sugestoes-produtos">
+            
+            <div class="produto-sugestao">
+                <div class="produto-img-container">
+                    <img src="img/gemeas.png" alt="Camiseta Gêmeas" class="produto-img">
+                </div>
+                <div class="container-sugestao">
+                    <p class="produto-nome">Camiseta Gêmeas</p>
+                    <p class="produto-preco">R$ 59,90</p>
+                    <div class="produto-footer"></div>
+                    <a href="carrinho.html" class="btn-comprar-sugestao">Comprar</a>
+                </div>
+                
+            </div>
+
+            <div class="produto-sugestao">
+                <div class="produto-img-container">
+                    <img src="img/simao.png" alt="Camiseta Simão" class="produto-img">
+                </div>
+                <div class="container-sugestao">
+                    <p class="produto-nome">Camiseta Simão</p>
+                    <p class="produto-preco">R$ 59,90</p>
+                    <div class="produto-footer"></div>
+                    <a href="carrinho.html" class="btn-comprar-sugestao">Comprar</a>
+                </div>
+                
+            </div>
+
+            <div class="produto-sugestao">
+                <div class="produto-img-container">
+                    <img src="img/amanda-pb.png" alt="Camiseta Amanda P&B" class="produto-img">
+                </div>
+                <div>
+                    
+                </div>
+                <div class="container-sugestao">
+                    <p class="produto-nome">Camiseta Amanda P&B</p>
+                    <p class="produto-preco">R$ 59,90</p>
+                    <div class="produto-footer"></div>
+                    <a href="carrinho.html" class="btn-comprar-sugestao">Comprar</a>
+                </div >
+               
+            </div>
+
+        </section>
+
+    </main>
+
+    
+
+</body>
+</html>
