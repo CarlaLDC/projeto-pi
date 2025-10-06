@@ -1,0 +1,630 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pagamento - Simons</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+</head>
+<style>
+   /* Importação de uma fonte genérica */
+@import url('https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600;700&display=swap');
+
+:root {
+    --primary-color: #000;
+    --secondary-color: #fff;
+    --light-gray: #f2f2f2;
+    --border-color: #ccc;
+    --stepper-active-bg: #000;
+    --stepper-active-text: #fff;
+    --stepper-inactive-text: #999;
+    --simons-gray-dark: #3e3e3e; /* Cinza escuro do botão Finalizar */
+}
+
+/* Reset básico e tipografia */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Open Sans', sans-serif;
+}
+
+body {
+    background-color: var(--secondary-color);
+    color: var(--primary-color);
+}
+
+/* ---------------------------------- */
+/* 1. HEADER/NAVBAR (Reutilizado)   */
+/* ---------------------------------- */
+.header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 15px 50px;
+    border-bottom: 1px solid var(--border-color);
+    height: 70px;
+}
+
+.logo {
+    font-size: 1.5em;
+    font-weight: 700;
+    letter-spacing: 2px;
+}
+
+.navbar a {
+    text-decoration: none;
+    color: var(--primary-color);
+    text-transform: uppercase;
+    margin: 0 15px;
+    font-size: 0.9em;
+    padding-bottom: 5px;
+}
+
+.user-actions {
+    display: flex;
+    align-items: center;
+}
+
+.login-btn {
+    background-color: var(--primary-color);
+    color: var(--secondary-color);
+    border: none;
+    padding: 8px 25px;
+    text-transform: lowercase;
+    font-size: 0.9em;
+    cursor: pointer;
+    margin-right: 15px;
+    border-radius: 2px;
+}
+
+.cart-icon, .menu-icon {
+    font-size: 1.2em;
+    color: var(--primary-color);
+    text-decoration: none;
+    margin-left: 10px;
+}
+
+/* ---------------------------------- */
+/* 2. LAYOUT PRINCIPAL E STEPPER      */
+/* ---------------------------------- */
+
+.container {
+    max-width: 1200px;
+    margin: 30px auto;
+    padding: 0 50px;
+}
+
+.header-pagamento {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+    border-bottom: 1px solid var(--border-color);
+    padding-bottom: 20px;
+    margin-bottom: 30px;
+}
+
+.titulo-pagamento {
+    font-size: 1.8em;
+    font-weight: 400;
+}
+
+.item-count {
+    font-size: 0.5em;
+    font-weight: 400;
+    color: var(--stepper-inactive-text);
+}
+
+/* Stepper de Checkout */
+.checkout-stepper {
+    display: flex;
+    align-items: center;
+    font-size: 0.8em;
+    text-transform: uppercase;
+}
+
+.step {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    position: relative;
+    padding: 0 30px;
+    color: var(--stepper-inactive-text);
+}
+
+/* Linhas entre os steps (já visitados) */
+.step:not(:last-child)::after {
+    content: '';
+    position: absolute;
+    top: 10px;
+    right: 0;
+    width: 30px; 
+    height: 1px;
+    background-color: var(--primary-color); /* Ativo por padrão */
+    transform: translateX(15px);
+}
+.step:not(.active):not(:last-child)::after {
+     background-color: var(--primary-color); /* Linha ativa entre steps visitados */
+}
+
+
+.step-number {
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    background-color: var(--light-gray);
+    color: var(--stepper-inactive-text);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 5px;
+    border: 1px solid var(--border-color);
+}
+
+/* Estilo para steps já visitados (1 e 2) */
+.step:not(.active) .step-number {
+    background-color: var(--primary-color);
+    color: var(--stepper-active-text);
+    border-color: var(--primary-color);
+}
+.step:not(.active) .step-name {
+    color: var(--primary-color);
+}
+
+/* Estilo para step ativo (3) */
+.step.active .step-number {
+    background-color: var(--primary-color);
+    color: var(--stepper-active-text);
+    border-color: var(--primary-color);
+}
+.step.active .step-name {
+    color: var(--primary-color);
+    font-weight: 600;
+}
+
+/* Linha horizontal para o stepper (conexão do step 2 com 3) */
+.step:nth-child(2)::before, .step:nth-child(3)::before {
+    content: '';
+    position: absolute;
+    top: 10px;
+    left: 0;
+    width: 30px;
+    height: 1px;
+    background-color: var(--primary-color);
+    transform: translateX(-15px);
+}
+.step:nth-child(3):not(.active)::before {
+    background-color: var(--border-color); /* Linha inativa antes do step 3 */
+}
+
+
+/* ---------------------------------- */
+/* 3. CONTEÚDO PRINCIPAL (2 Colunas)  */
+/* ---------------------------------- */
+
+.pagamento-main-content {
+    display: flex;
+    gap: 30px;
+    align-items: flex-start;
+}
+
+.formas-pagamento-container {
+    flex: 2; 
+}
+
+.formas-pagamento-container h2 {
+    font-size: 1.2em;
+    font-weight: 600;
+    margin-bottom: 25px;
+}
+
+.resumo-pedido-pagamento {
+    flex: 1; 
+}
+
+/* --- SISTEMA DE ABAS (HTML/CSS PURE) --- */
+.tab-system {
+    display: flex;
+    border: 1px solid var(--border-color);
+    margin-bottom: 40px;
+}
+
+/* Oculta os radio buttons */
+.tab-system input[type="radio"] {
+    display: none;
+}
+
+/* Lista de Abas (Menu lateral) */
+.tab-list {
+    flex-basis: 30%; /* Largura da coluna de abas */
+    border-right: 1px solid var(--border-color);
+    display: flex;
+    flex-direction: column;
+}
+
+.tab-label {
+    padding: 15px 20px;
+    font-size: 0.9em;
+    font-weight: 600;
+    cursor: pointer;
+    border-bottom: 1px solid var(--border-color);
+    background-color: var(--light-gray); /* Fundo inativo */
+}
+
+.tab-label i {
+    margin-right: 10px;
+    color: var(--stepper-inactive-text);
+}
+
+/* Conteúdo das Abas */
+.tab-content-container {
+    flex-basis: 70%;
+    padding: 30px;
+    position: relative;
+}
+
+.tab-content {
+    display: none; /* Oculta todo o conteúdo por padrão */
+    position: absolute;
+    width: calc(100% - 60px); /* 100% - padding */
+    top: 30px;
+    left: 30px;
+}
+
+/* Seletores CSS para mostrar o conteúdo e colorir a aba ativa */
+
+/* Aba Cartão de Crédito */
+#tab-credit:checked + #tab-pix + .tab-list > label:nth-child(1),
+#tab-credit:checked + .tab-list > label:nth-child(1) {
+    background-color: var(--secondary-color);
+    border-right: none;
+}
+#tab-credit:checked + #tab-pix + .tab-list > label:nth-child(1) i,
+#tab-credit:checked + .tab-list > label:nth-child(1) i {
+    color: var(--primary-color);
+}
+
+/* Aba Pix */
+#tab-pix:checked + .tab-list > label:nth-child(2) {
+    background-color: var(--secondary-color);
+    border-right: none;
+}
+#tab-pix:checked + .tab-list > label:nth-child(2) i {
+    color: var(--primary-color);
+}
+
+/* Mostra o conteúdo ativo */
+#tab-credit:checked ~ .tab-content-container > #content-credit,
+#tab-pix:checked ~ .tab-content-container > #content-pix {
+    display: block;
+}
+
+/* Estilo do Formulário de Cartão */
+.card-mockup {
+    width: 150px;
+    height: 100px;
+    background-color: var(--border-color);
+    margin-bottom: 25px;
+}
+
+.credit-card-form label {
+    font-size: 0.8em;
+    font-weight: 600;
+    margin-bottom: 5px;
+    display: block;
+    margin-top: 15px;
+}
+
+.credit-card-form input {
+    width: 100%;
+    padding: 5px 0;
+    border: none;
+    border-bottom: 1px solid var(--border-color);
+    outline: none;
+    font-size: 1em;
+}
+
+.form-row-2 {
+    display: flex;
+    gap: 20px;
+    align-items: flex-end;
+}
+
+.form-row-2 > * {
+    flex: 1;
+}
+
+/* Estilo do Produto no Pedido (Rodapé da Coluna Esquerda) */
+.produto-pedido-item {
+    display: flex;
+    align-items: flex-start;
+    padding: 20px 0;
+    border-top: 1px solid var(--border-color);
+}
+
+.item-img {
+    width: 80px;
+    height: 80px;
+    object-fit: cover;
+    margin-right: 20px;
+}
+
+.item-details {
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+}
+
+.item-name {
+    font-size: 1em;
+    font-weight: 600;
+    margin-bottom: 5px;
+}
+
+.item-qty, .item-size {
+    font-size: 0.8em;
+    color: var(--stepper-inactive-text);
+    display: inline-block;
+    margin-right: 10px;
+}
+
+.item-price {
+    font-size: 1em;
+    font-weight: 600;
+    margin-top: 10px;
+}
+
+.item-actions i {
+    font-size: 1em;
+    margin-left: 10px;
+    cursor: pointer;
+    color: var(--stepper-inactive-text);
+}
+
+
+/* --- Coluna Direita (Cupom e Resumo) --- */
+
+.cupom-box {
+    padding: 20px;
+    background-color: var(--light-gray);
+    margin-bottom: 30px;
+    border-radius: 2px;
+}
+
+.cupom-title, .resumo-title {
+    font-weight: 600;
+    margin-bottom: 15px;
+    font-size: 0.9em;
+}
+
+.cupom-input-group {
+    display: flex;
+}
+
+.cupom-input-group input {
+    flex-grow: 1;
+    padding: 8px;
+    border: 1px solid var(--border-color);
+    border-right: none;
+    font-size: 0.9em;
+    outline: none;
+}
+
+.btn-aplicar {
+    padding: 8px 15px;
+    background-color: var(--simons-gray-dark);
+    color: var(--secondary-color);
+    border: none;
+    cursor: pointer;
+    font-weight: 600;
+    font-size: 0.9em;
+}
+
+/* Resumo do Pedido */
+.resumo-box {
+    padding: 0 10px;
+}
+
+.resumo-line {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 10px;
+    font-size: 0.9em;
+}
+
+.resumo-line .label {
+    color: var(--stepper-inactive-text);
+}
+
+.resumo-total {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 1px solid var(--border-color);
+    padding-bottom: 15px;
+    margin-bottom: 20px;
+    font-size: 1.2em;
+    font-weight: 600;
+}
+
+/* Botões de Ação */
+.resumo-actions {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.btn-finalizar-compra, .btn-adicionar-mais {
+    width: 100%;
+    padding: 12px;
+    font-weight: 600;
+    cursor: pointer;
+    text-transform: uppercase;
+    border-radius: 2px;
+    font-size: 0.9em;
+}
+
+.btn-finalizar-compra {
+    background-color: var(--simons-gray-dark);
+    color: var(--secondary-color);
+    border: 1px solid var(--simons-gray-dark);
+}
+
+.btn-adicionar-mais {
+    background-color: var(--secondary-color);
+    color: var(--primary-color);
+    border: 1px solid var(--border-color);
+}
+</style>
+<body>
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pagamento - Simons</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+</head>
+<body>
+
+    <header class="header">
+        <div class="logo">SIMONS</div>
+        <nav class="navbar">
+            <a href="#">casual</a>
+            <a href="#">social</a>
+            <a href="#">moda praia</a>
+            <a href="#">acessórios</a>
+        </nav>
+        <div class="user-actions">
+            <button class="login-btn">login</button>
+            <a href="#" class="cart-icon"><i class="fas fa-shopping-cart"></i></a>
+            <a href="#" class="menu-icon"><i class="fas fa-ellipsis-v"></i></a> 
+        </div>
+    </header>
+
+    <main class="container">
+        
+        <div class="header-pagamento">
+            <h1 class="titulo-pagamento">Pagamento <span class="item-count">( 1 Item )</span></h1>
+            <div class="checkout-stepper">
+                <div class="step">
+                    <span class="step-number">1</span>
+                    <span class="step-name">carrinho</span>
+                </div>
+                <div class="step">
+                    <span class="step-number">2</span>
+                    <span class="step-name">entrega</span>
+                </div>
+                <div class="step active">
+                    <span class="step-number">3</span>
+                    <span class="step-name">pagamento</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="pagamento-main-content">
+            <div class="formas-pagamento-container">
+                <h2>Formas de pagamento</h2>
+
+                <div class="tab-system">
+                    
+                    <input type="radio" name="payment-tab" id="tab-credit" checked>
+                    <input type="radio" name="payment-tab" id="tab-pix">
+
+                    <div class="tab-list">
+                        <label for="tab-credit" class="tab-label">
+                            <i class="fas fa-credit-card"></i> Cartão de Crédito
+                        </label>
+                        <label for="tab-pix" class="tab-label">
+                            <i class="fas fa-qrcode"></i> Pix
+                        </label>
+                    </div>
+
+                    <div class="tab-content-container">
+                        
+                        <div class="tab-content" id="content-credit">
+                            <div class="card-mockup"></div>
+                            
+                            <form class="credit-card-form">
+                                <label for="numero-cartao">Número de cartão:</label>
+                                <input type="text" id="numero-cartao">
+                                
+                                <div class="form-row-2">
+                                    <label for="validade">Validade:</label>
+                                    <input type="text" id="validade" class="w-half">
+                                    <label for="cvv">CVV:</label>
+                                    <input type="text" id="cvv" class="w-half">
+                                </div>
+                                
+                                <label for="nome-impresso">Nome impresso:</label>
+                                <input type="text" id="nome-impresso">
+                                
+                                <label for="cpf">CPF:</label>
+                                <input type="text" id="cpf">
+                                
+                                <label for="parcelas">Número de parcelas:</label>
+                                <input type="text" id="parcelas">
+                            </form>
+                        </div>
+                        
+                        <div class="tab-content" id="content-pix">
+                            <p class="pix-info">O QR Code para pagamento via Pix será gerado após a finalização da compra.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="produto-pedido-item">
+                    <img src="caminho/para/camiseta_simons.png" alt="Camiseta Simons" class="item-img">
+                    <div class="item-details">
+                        <p class="item-name">Camiseta Simons</p>
+                        <p class="item-qty">1 und</p>
+                        <p class="item-size">M</p>
+                        <p class="item-price">R$ 59,90</p>
+                    </div>
+                    <div class="item-actions">
+                        <i class="fas fa-pencil-alt"></i>
+                        <i class="fas fa-trash-alt"></i>
+                    </div>
+                </div>
+            </div>
+
+            <aside class="resumo-pedido-pagamento">
+                
+                <div class="cupom-box">
+                    <p class="cupom-title">Aplicar cupom</p>
+                    <div class="cupom-input-group">
+                        <input type="text" placeholder="Digite seu cupom aqui">
+                        <button class="btn-aplicar">Aplicar</button>
+                    </div>
+                </div>
+
+                <div class="resumo-box">
+                    <p class="resumo-title">Resumo do pedido</p>
+
+                    <div class="resumo-line">
+                        <span class="label">Frete:</span>
+                        <span class="value">R$ 9,90</span>
+                    </div>
+                    
+                    <div class="resumo-total">
+                        <span class="total-label">Total:</span>
+                        <span class="total-price">R$ 69,80</span>
+                    </div>
+
+                    <div class="resumo-actions">
+                        <button class="btn-finalizar-compra">Finalizar compra</button>
+                        <button class="btn-adicionar-mais">Adicionar mais produtos</button>
+                    </div>
+                </div>
+
+            </aside>
+        </div>
+        
+    </main>
+
+</body>
+</html>
+</body>
+</html>
