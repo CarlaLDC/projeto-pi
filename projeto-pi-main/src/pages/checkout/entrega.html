@@ -1,0 +1,545 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Entrega - Simons</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+</head>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600;700&display=swap');
+
+:root {
+    --primary-color: #000;
+    --secondary-color: #fff;
+    --light-gray: #f2f2f2;
+    --border-color: #ccc;
+    --stepper-active-bg: #000;
+    --stepper-active-text: #fff;
+    --stepper-inactive-text: #999;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Open Sans', sans-serif;
+}
+
+body {
+    background-color: var(--secondary-color);
+    color: var(--primary-color);
+}
+
+
+.header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 15px 50px;
+    border-bottom: 1px;
+    height: 70px;
+    background: #f2f2f2;
+    box-shadow: 0 5px 10px rgba(0, 0, 0, 0.377);
+
+}
+
+.logo {
+    font-size: 1.5em;
+    font-weight: 700;
+    letter-spacing: 2px;
+}
+
+.navbar a {
+    text-decoration: none;
+    color: var(--primary-color);
+    text-transform: uppercase;
+    margin: 0 15px;
+    font-size: 0.9em;
+    padding-bottom: 5px;
+}
+
+.user-actions {
+    display: flex;
+    align-items: center;
+}
+
+.login-btn {
+    background-color: var(--primary-color);
+    color: var(--secondary-color);
+    border: none;
+    padding: 8px 25px;
+    text-transform: lowercase;
+    font-size: 0.9em;
+    cursor: pointer;
+    margin-right: 15px;
+    border-radius: 2px;
+}
+
+.cart-icon, .menu-icon {
+    font-size: 1.2em;
+    color: var(--primary-color);
+    text-decoration: none;
+    margin-left: 10px;
+}
+
+
+.container {
+    max-width: 1200px;
+    margin: 30px auto;
+    padding: 0 50px;
+}
+
+.header-entrega {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+    border-bottom: 1px solid var(--border-color);
+    padding-bottom: 20px;
+    margin-bottom: 30px;
+}
+
+.titulo-entrega {
+    font-size: 1.8em;
+    font-weight: 400;
+}
+
+.item-count {
+    font-size: 0.5em;
+    font-weight: 400;
+    color: var(--stepper-inactive-text);
+}
+
+/* Stepper de Checkout */
+.checkout-stepper {
+    display: flex;
+    align-items: center;
+    font-size: 0.8em;
+    text-transform: uppercase;
+}
+
+.step {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    position: relative;
+    padding: 0 30px;
+    color: var(--stepper-inactive-text);
+}
+
+.step:not(:last-child)::after {
+    content: '';
+    position: absolute;
+    top: 10px;
+    right: 0;
+    width: 30px; 
+    height: 1px;
+    background-color: var(--border-color);
+    transform: translateX(15px);
+}
+
+.step-number {
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    background-color: var(--light-gray);
+    color: var(--stepper-inactive-text);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 5px;
+    border: 1px solid var(--border-color);
+}
+
+.step.active .step-number {
+    background-color: var(--stepper-active-bg);
+    color: var(--stepper-active-text);
+    border-color: var(--stepper-active-bg);
+}
+
+.step.active .step-name {
+    color: var(--primary-color);
+    font-weight: 600;
+}
+
+.step:nth-child(2)::before, .step:nth-child(3)::before {
+    content: '';
+    position: absolute;
+    top: 10px;
+    left: 0;
+    width: 30px;
+    height: 1px;
+    background-color: var(--border-color);
+    transform: translateX(-15px);
+}
+
+.step:nth-child(2).active::before, .step:nth-child(3).active::before {
+     background-color: var(--primary-color);
+}
+
+
+.entrega-main {
+    display: flex;
+    gap: 30px;
+   
+}
+
+.formulario-entrega {
+    flex: 2; 
+    margin-bottom: 10px;
+}
+
+.formulario-entrega h2 {
+    font-size: 1.2em;
+    font-weight: 600;
+    margin-bottom: 25px;
+}
+
+.resumo-pedido-entrega {
+    flex: 1; 
+}
+
+.cep-group {
+    margin-bottom: 40px;
+}
+
+.cep-label {
+    font-size: 0.9em;
+    font-weight: 600;
+    margin-bottom: 5px;
+}
+
+.cep-input-group {
+    display: flex;
+    width: 60%; 
+}
+
+.input-cep {
+    flex-grow: 1;
+    padding: 10px;
+    border: none;
+    border-bottom: 1px solid var(--border-color);
+    outline: none;
+    font-size: 1em;
+}
+
+.btn-aplicar {
+    padding: 10px 20px;
+    background-color: var(--primary-color);
+    color: var(--secondary-color);
+    border: none;
+    cursor: pointer;
+    font-weight: 600;
+    font-size: 0.9em;
+    border-radius: 2px;
+}
+
+.endereco-form {
+    display: flex;
+    flex-direction: column;
+    gap: 30px; 
+    margin-bottom: 40px;
+}
+
+.form-row-2, .form-row-3 {
+    display: flex;
+    gap: 20px; 
+    align-items: flex-end; 
+}
+
+.form-row-2 > *, .form-row-3 > * {
+    display: flex;
+    flex-direction: column;
+}
+
+
+
+.w-2-3 { 
+    flex-basis: 66.66%; 
+    
+}
+
+.w-1-3 { 
+    flex-basis: 33.33%; 
+}
+
+.w-half { 
+    flex-basis: 50%; 
+}
+
+.w-3-of-10 { 
+    flex-basis: 30%; 
+}
+
+.w-4-of-10 { 
+    flex-basis: 40%; 
+}
+
+
+.endereco-form label {
+    font-size: 0.8em;
+    font-weight: 600;
+    margin-bottom: 5px;
+}
+
+.endereco-form input {
+    padding: 5px 0;
+    border: none;
+    border-bottom: 1px solid var(--border-color);
+    outline: none;
+    font-size: 1em;
+}
+
+.container-entrega {
+    margin-bottom: 10px;
+    background: var(--light-gray);
+    padding: 50px;
+}
+
+.optional {
+    font-weight: 400;
+    color: var(--stepper-inactive-text);
+    font-size: 0.9em;
+}
+
+.produto-pedido-item {
+    display: flex;
+    align-items: flex-start;
+    padding: 20px;
+    margin-top: 40px;
+    background: var(--light-gray);
+}
+
+.item-img {
+    width: 80px;
+    height: 80px;
+    object-fit: cover;
+    margin-right: 20px;
+}
+
+.item-details {
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+}
+
+.item-name {
+    font-size: 1em;
+    font-weight: 600;
+    margin-bottom: 5px;
+}
+
+.item-qty, .item-size {
+    font-size: 0.8em;
+    color: var(--stepper-inactive-text);
+    display: inline-block;
+    margin-right: 10px;
+}
+
+.item-price {
+    font-size: 1em;
+    font-weight: 600;
+    margin-top: 10px;
+}
+
+.item-actions i {
+    font-size: 1em;
+    margin-left: 10px;
+    cursor: pointer;
+    color: var(--stepper-inactive-text);
+}
+
+.resumo-pedido-entrega {
+    padding: 20px;
+    background-color: var(--light-gray);
+    height: fit-content; 
+    border-radius: 2px;
+}
+
+.resumo-title {
+    font-weight: 600;
+    margin-bottom: 25px;
+    font-size: 0.9em;
+}
+
+.resumo-line {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 10px;
+    font-size: 0.9em;
+}
+
+.resumo-line .label {
+    color: var(--stepper-inactive-text);
+}
+
+.resumo-total {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-top: 1px solid var(--border-color);
+    padding-top: 15px;
+    margin-top: 20px;
+    font-size: 1.2em;
+    font-weight: 600;
+}
+
+.resumo-actions {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    margin-top: 20px;
+}
+
+.btn-comprar, .btn-adicionar-mais {
+    width: 100%;
+    padding: 12px;
+    font-weight: 600;
+    cursor: pointer;
+    text-transform: uppercase;
+    border-radius: 2px;
+    font-size: 0.9em;
+}
+
+.btn-comprar {
+    background-color: var(--primary-color);
+    color: var(--secondary-color);
+    border: 1px solid var(--primary-color);
+}
+
+.btn-adicionar-mais {
+    background-color: var(--light-gray);
+    color: var(--primary-color);
+    border: 1px solid var(--border-color);
+}
+
+</style>
+
+<body>
+
+    <header class="header">
+        <div class="logo">SIMONS</div>
+        <nav class="navbar">
+            <a href="/src/pages/pagina-camisetas/">casual</a>
+            <a href="#">social</a>
+           
+        </nav>
+        <div class="user-actions">
+            <button class="login-btn">login</button>
+            <a href="#" class="cart-icon"><i class="fas fa-shopping-cart"></i></a>
+            <a href="#" class="menu-icon"><i class="fas fa-ellipsis-v"></i></a> 
+        </div>
+    </header>
+
+    <main class="container">
+        
+        <div class="header-entrega">
+            <h1 class="titulo-entrega">Entrega <span class="item-count">( 1 Item )</span></h1>
+            <div class="checkout-stepper">
+                <div class="step">
+                    <span class="step-number">1</span>
+                    <span class="step-name">carrinho</span>
+                </div>
+                <div class="step active">
+                    <span class="step-number">2</span>
+                    <span class="step-name">entrega</span>
+                </div>
+                <div class="step">
+                    <span class="step-number">3</span>
+                    <span class="step-name">pagamento</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="entrega-main">
+            <div class="formulario-entrega">
+                <div class="container-entrega">
+                    <h2>Endereço de entrega:</h2>
+
+                <div class="cep-group">
+                    <p class="cep-label">Busque pelo seu CEP</p>
+                    <div class="cep-input-group">
+                        <input type="text" placeholder="Digite seu CEP aqui" class="input-cep">
+                        <button class="btn-aplicar">Aplicar</button>
+                    </div>
+                </div>
+
+                <form class="endereco-form">
+                    
+                    <div class="form-row-2">
+                        <label for="endereco">Endereço:</label>
+                        <input type="text" id="endereco" class="w-2-3">
+                        <label for="numero">Número:</label>
+                        <input type="text" id="numero" class="w-1-3">
+                    </div>
+
+                    <div class="form-row-2">
+                        <label for="complemento">Complemento: </label>
+                        <input type="text" id="complemento" class="w-2-3" placeholder="Campo opcional">
+                        <label for="referencia">Referência: </label>
+                        <input type="text" id="referencia" class="w-1-3" placeholder="Campo opcional">
+                    </div>
+
+                    <div class="form-row-3">
+                        <label for="bairro">Bairro:</label>
+                        <input type="text" id="bairro" class="w-3-of-10">
+                        <label for="cidade">Cidade:</label>
+                        <input type="text" id="cidade" class="w-4-of-10">
+                        <label for="estado">Estado:</label>
+                        <input type="text" id="estado" class="w-3-of-10">
+                    </div>
+
+                    <div class="form-row-2">
+                        <label for="nome-destinatario">Nome do destinatário:</label>
+                        <input type="text" id="nome-destinatario" class="w-half">
+                        <label for="telefone">Telefone:</label>
+                        <input type="text" id="telefone" class="w-half">
+                    </div>
+
+                </form>
+                </div>
+                
+                
+                <div class="produto-pedido-item">
+                    <img src="img/simons-preta.png.jpeg" alt="Camiseta Simons" class="item-img">
+                    <div class="item-details">
+                        <p class="item-name">Camiseta Simons</p>
+                        <p class="item-qty">1 und</p>
+                        <p class="item-size">P</p>
+                        <p class="item-price">R$ 59,90</p>
+                    </div>
+                    <div class="item-actions">
+                        <i class="fas fa-pencil-alt"></i>
+                        <i class="fas fa-trash-alt"></i>
+                    </div>
+                </div>
+            </div>
+
+            <aside class="resumo-pedido-entrega">
+                
+                <p class="resumo-title">Resumo do pedido</p>
+
+                <div class="resumo-line">
+                    <span class="label">Frete:</span>
+                    <span class="value">R$ 9,90</span>
+                </div>
+                
+                <div class="resumo-total">
+                    <span class="total-label">Total:</span>
+                    <span class="total-price">R$ 69,80</span>
+                </div>
+
+                <div class="resumo-actions">
+                    <a href="pagamento.html">Comprar</a>
+                    <button class="btn-comprar">Comprar</button>
+                    <button class="btn-adicionar-mais">Adicionar mais produtos</button>
+                </div>
+
+            </aside>
+        </div>
+        
+    </main>
+
+</body>
+</html>
